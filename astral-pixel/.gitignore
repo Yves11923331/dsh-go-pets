@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+frames/
+trans/
+symbols/
+pack-src/
+.DS_Store
