@@ -256,8 +256,8 @@ def main():
     juggling = [shift(juggle, d) for d in (0, -1, -2, -1)]
     praise, tickle, annoyed = full['praise'], full['tickle'], full['annoyed']
     sw = full['sidework']
-    working2 = [shift_x(shift(sw, dy), dx) for dy, dx in
-                ((0, 0), (-1, 1), (0, 0), (-1, -1), (-2, 1), (-1, 0), (0, -1), (-1, 1))]
+    # working2（双代理）：去掉左右位移，只留 1px 慢呼吸，避免整张桌子跟着抖
+    working2 = [shift(sw, dy) for dy in (0, -1, -1, 0)]
     juggle2 = [shift_x(shift(juggle, dy), dx) for dy, dx in
                ((0, 0), (-2, -1), (-4, 0), (-3, 1), (-1, 0), (0, -1))]
     tickle2 = [shift_x(squash(tickle, f), d) for f, d in
@@ -300,7 +300,7 @@ def main():
         'praise':       (tap_right, [80, 220, 120, 80], False),
         'tickle':       (tickled, [90, 70, 90, 70, 90, 70], False),
         'tickle2':      (tickle2, [90, 70, 90, 70, 90, 90], False),
-        'working2':     (working2, [100, 80, 100, 80, 90, 80, 100, 80], True),
+        'working2':     (working2, [220, 200, 220, 200], True),
         'juggling2':    (juggle2, [120, 100, 120, 100, 120, 100], True),
         'annoyed':      (angry, [150, 140, 150, 140, 150], False),
         'drag':         (dragged, [150] * 8, True),

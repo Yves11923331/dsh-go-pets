@@ -49,7 +49,7 @@ xiadie/
 | idle | 待机 | 16 | 空闲（呼吸 + 眨眼） |
 | thinking | 思考 | 8 | agent 思考中 |
 | working | 干活 | 8 | 工具运行中（1 个会话） |
-| working2 | 干活·双代理 | 8 | ≥2 个子代理（`tiers`） |
+| working2 | 干活·双代理 | 4 | ≥2 个子代理（`tiers`） |
 | done | 完成 | 8 | 回合完成 |
 | notification | 提醒 | 8 | 等你确认/回答 |
 | error | 报错 | 8 | 回合级错误（工具失败不会触发） |
@@ -104,6 +104,19 @@ cd out/astral-pixel && python3 -m zipfile -c /sdcard/Download/DSH-Go/遐蝶/遐�
   `reactions.tickle2` 用平铺字符串键（与官方 convert 的主题模式一致），`--compat-reactions` 实测仍 PASS。
 - **时长补全**：`timings.minDisplay` 补 sweeping 5600 / carrying 3200；`autoReturn` 补 sweeping 300000（安全上限）/ carrying 3200。
 - working2 的构图含桌子、整体比 working 宽，`place(center='content')` 按内容居中，避免贴右边缘被裁。
+
+## 2026-11-26 working2 降抖
+
+- 原 `working2` 8 帧、每帧 80–100ms，同时叠 `dx ±1` 与 `dy 0→-2`，整张桌子跟着左右/上下跳。
+- 改为 4 帧 `dy (0,-1,-1,0)`、每帧 200–220ms、`dx=0`：人物和桌子不再左右移，只保留 1px 慢呼吸。
+- 帧数 8→4，打包后精灵表合并成 2 帧，`tiers` / `states` 不变，`pet_pack_check.py --compat-reactions` PASS。
+
+## 2026-11-26 技能对照补项（pet-theme）
+
+- 补 `timings.minDisplay.working/thinking = 1000`：短暂状态防抖，避免一闪而过（技能参考值）。
+- 补 `timings.autoReturn.error = 4800`：报错 4.8s 后自动回待机；原来没写 `autoReturn`，error 只能等下一个状态覆盖。
+- `author / license / source` 保持 null：作者信息走创意工坊投稿，不写进包里（已投稿，避免与投稿信息冲突）。
+- `pet_pack_check.py --compat-reactions` 仍 PASS；成品 zip md5 `c5126dec…`。
 - 动画 22 → 25，zip 约 1.05 MB；旧 astral-pixel 草稿目录已移到 `魔门-DSH/CC-临时/astral-pixel-旧版-20261125/`。
 
 ## 命名规则（踩过的坑）

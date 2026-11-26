@@ -6,7 +6,7 @@
 |---|---|---|---|---|
 | [`whale-maid/`](whale-maid/) | 嫌弃の鲸鱼女仆 | 200×200（平滑绘制） | 22 | [`whale-maid.zip`](whale-maid/out/whale-maid.zip) |
 | [`astral-pixel/`](astral-pixel/) | 遐蝶 | 113×170（像素画） | 25 | [`遐蝶.zip`](astral-pixel/out/遐蝶.zip) |
-| [`naughty-gemini/`](naughty-gemini/) | 顽皮的Gemini | 200×200（平滑绘制） | 22 | [`naughty-gemini.zip`](naughty-gemini/out/naughty-gemini.zip) |
+| [`naughty-gemini/`](naughty-gemini/) | 顽皮的Gemini | 200×200（平滑绘制） | 25 | [`naughty-gemini.zip`](naughty-gemini/out/naughty-gemini.zip) |
 
 ## 安装
 
@@ -19,7 +19,7 @@
 
 - **分档**：三只都支持 `tiers`——1 个会话播 `working`，≥2 个子代理切到 `working2`；遐蝶另有 `juggling` / `juggling2` 两档。
 - **反应**：被戳、点赞、挠痒、嫌弃、被拎；遐蝶多一段 `tickle2`（摸头第二段）。
-- **彩蛋**：遐蝶完成时有 30% 概率播专属 `cheer2`。
+- **彩蛋**：遐蝶、Gemini 完成时都有 30% 概率播专属 `cheer2`；Gemini 的彩蛋是长大成成年形态的透明立绘。
 - **时长**：都写了 `timings.minDisplay` / `autoReturn`，避免报错一闪而过、庆祝卡住。
 
 ## 结构

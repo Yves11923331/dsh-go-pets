@@ -62,6 +62,20 @@ def zoom_bottom(im, factor):
     return out
 
 
+def squash(im, factor):
+    """整体压扁（笑到弯腰）：保持脚底不动，上身缩短。"""
+    a = np.array(im)
+    ys, xs = np.nonzero(a[..., 3] > 8)
+    fig = im.crop((xs.min(), ys.min(), xs.max() + 1, ys.max() + 1))
+    w = max(1, round(fig.width * factor))
+    h = max(1, round(fig.height * factor))
+    fig = fig.resize((w, h), Image.LANCZOS)
+    canvas = Image.new('RGBA', im.size, (0, 0, 0, 0))
+    bottom = int(ys.max()) + 1
+    canvas.alpha_composite(fig, ((im.width - w) // 2, max(0, bottom - h)))
+    return canvas
+
+
 def shift(im, dy=0, dx=0):
     out = Image.new('RGBA', im.size, (0, 0, 0, 0))
     out.alpha_composite(im, (dx, dy))
@@ -140,12 +154,27 @@ def build():
                    [shift(n, 0)] * 2,
                    [320, 320, 300, 300, 300, 300, 320, 320])
     A['tap'] = ([shift(face('tap'), 0, d) for d in (0, 3, -3, 0)], [110] * 4)
-    # done：完成，跳起来撒星星
-    dn = face('done')
-    fr, du = [], []
-    for dy in (0, -3, -7, -9, -6, -2):
-        fr.append(shift(dn, dy)); du.append(130)
-    A['done'] = (fr, du)
+    # done：完成——双手比耶的大星星姿势，蓄力、起跳、滞空、落地、回弹、停住
+    dn = face('done2')
+    done_dy = (2, -1, -6, -9, -5, 0, -2, 0)
+    done_ms = (90, 70, 90, 200, 110, 90, 80, 280)
+    A['done'] = ([shift(dn, dy) for dy in done_dy], list(done_ms))
+
+    # cheer2：完成彩蛋——长大成成年形态，轻呼吸
+    def grown_canvas():
+        im = Image.open(ROOT / 'grown-src2' / 'gpt-20261126-085116-2.png').convert('RGBA')
+        a = np.array(im)
+        ys, xs = np.nonzero(a[..., 3] > 8)
+        fig = im.crop((xs.min(), ys.min(), xs.max() + 1, ys.max() + 1))
+        h = CANVAS - 32
+        w = max(1, round(fig.width * h / fig.height))
+        fig = fig.resize((w, h), Image.LANCZOS)
+        c = Image.new('RGBA', (CANVAS, CANVAS), (0, 0, 0, 0))
+        c.alpha_composite(fig, ((CANVAS - w) // 2, CANVAS - 16 - h))
+        return c
+    g = grown_canvas()
+    A['cheer2'] = ([shift(g, dy) for dy in (0, -1, -2, -1, 0, -1)],
+                   [240, 220, 240, 220, 240, 300])
 
     A['praise'] = ([shift(face('praise'), d) for d in (0, -3, -5, -2, 0)], [140] * 5)
     A['tickle'] = ([shift(face('tickle'), 0, d) for d in (0, 2, -2, 2, -2, 0)], [120] * 6)
@@ -160,6 +189,16 @@ def build():
         fr.append(shift(wk, 0, dx))
         du.append(180)
     A['walk'] = (fr, du)
+
+    # tickle2：摸头第二段，压扁成笑到弯腰
+    tk = face('tickle')
+    A['tickle2'] = ([squash(tk, f) for f in (0.96, 0.91, 0.86, 0.91, 0.96, 0.93)],
+                    [120] * 6)
+    # juggling2：抛接·双代理，抛更高 + 轻左右摇
+    jg = face('juggling')
+    A['juggling2'] = ([shift(jg, dy, dx) for dy, dx in
+                       ((0, 0), (-3, -2), (-5, 0), (-3, 2), (0, 0), (-2, -1), (-4, 1))],
+                      [170] * 7)
 
     A['pout'] = cycle(face('pout'), (0, -1, -2, -1, 0), 320)
     A['yawn'] = cycle(face('yawn'), (0, -1, -2, -2, -1, 0), 380)

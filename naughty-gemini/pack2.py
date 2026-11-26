@@ -14,12 +14,14 @@ OUT = ROOT / 'out' / ID
 
 TIMINGS = {
     'minDisplay': {'error': 1600, 'notification': 1800, 'attention': 1200,
-                   'sweeping': 5600, 'carrying': 3200},
-    'autoReturn': {'attention': 4000, 'sweeping': 300000, 'carrying': 3200},
+                   'sweeping': 5600, 'carrying': 3200,
+                   'working': 1000, 'thinking': 1000},
+    'autoReturn': {'attention': 4000, 'error': 4800, 'sweeping': 300000, 'carrying': 3200},
     'wakeMs': 4000,
 }
-TIERS = {'working': [{'min': 2, 'anim': 'working2'}, {'min': 1, 'anim': 'working'}]}
-BONUS = {'attention': {'anims': ['happy', 'pout'], 'chance': 0.35}}
+TIERS = {'working': [{'min': 2, 'anim': 'working2'}, {'min': 1, 'anim': 'working'}],
+         'juggling': [{'min': 2, 'anim': 'juggling2'}, {'min': 1, 'anim': 'juggling'}]}
+BONUS = {'attention': {'anims': ['cheer2'], 'chance': 0.3}}
 
 
 def run(cmd):
@@ -44,6 +46,11 @@ def main():
     pack['tiers'] = TIERS
     if 'working2' in pack.get('animations', {}):
         pack['states']['working'] = ['working']
+    if 'juggling2' in pack.get('animations', {}):
+        pack['states']['juggling'] = ['juggling']
+    # cheer2 是完成彩蛋，不进待机小剧场
+    if 'cheer2' in pack.get('animations', {}):
+        pack['idlePool']['anims'] = [a for a in pack['idlePool']['anims'] if a['anim'] != 'cheer2']
     pack_path.write_text(json.dumps(pack, ensure_ascii=False, indent=1))
     print('states', pack.get('states'), 'reactions', pack.get('reactions'))
     print('idlePool', [a['anim'] for a in pack.get('idlePool', {}).get('anims', [])])

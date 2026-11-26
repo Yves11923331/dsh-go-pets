@@ -39,9 +39,13 @@ IDLE_POOL = ['gaze', 'yawn', 'flower', 'smile']
 BONUS = {'attention': {'anims': ['cheer2'], 'chance': 0.3}}
 TIMINGS = {
     'minDisplay': {'error': 1600, 'notification': 1800, 'attention': 1200,
-                   'sweeping': 5600, 'carrying': 3200},
-    'autoReturn': {'attention': 4000, 'sweeping': 300000, 'carrying': 3200},
+                   'sweeping': 5600, 'carrying': 3200,
+                   'working': 1000, 'thinking': 1000},
+    'autoReturn': {'attention': 4000, 'error': 4800, 'sweeping': 300000, 'carrying': 3200},
 }
+AUTHOR = None
+LICENSE = None
+SOURCE = None
 TIERS = {
     'working': [{'min': 2, 'anim': 'working2'}, {'min': 1, 'anim': 'working'}],
     'juggling': [{'min': 2, 'anim': 'juggling2'}, {'min': 1, 'anim': 'juggling'}],
@@ -97,9 +101,9 @@ def main():
         'schema': 1,
         'id': PACK_ID,
         'name': NAME,
-        'author': None,
-        'license': None,
-        'source': None,
+        'author': AUTHOR,
+        'license': LICENSE,
+        'source': SOURCE,
         'pixelArt': bool(hard),
         'scale': 1,
         'canvas': {'w': cw, 'h': ch},

@@ -22,7 +22,8 @@
 
 - `tiers`：`working` / `juggling` 各分两档，子代理数 ≥2 时切到 `working2` / `juggling2`。
 - `tickle2`：由 tickle 姿势整体压扁（0.94 → 0.85，脚底不动）做出"笑到弯腰"，`reactions` 里用平铺字符串键，旧版 App 的兼容校验仍能通过。
-- `timings`：`minDisplay` 给 error 1600ms、notification 1800ms、attention 1200ms、sweeping 5600ms、carrying 3200ms；`autoReturn` 给 attention 4000ms、sweeping 300000ms、carrying 3200ms。
+- `timings`：`minDisplay` 给 error 1600ms、notification 1800ms、attention 1200ms、sweeping 5600ms、carrying 3200ms，`working` / `thinking` 1000ms 防抖；`autoReturn` 给 attention 4000ms、error 4800ms、sweeping 300000ms、carrying 3200ms。
+- `working2`：只在上下 1px 慢呼吸，不做左右位移，避免整张桌子跟着晃。
 
 ## 结构
 
